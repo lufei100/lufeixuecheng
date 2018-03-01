@@ -18,7 +18,8 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-url(r'^news/$',views.NewsView.as_view()),
+    url(r'^login/$',views.LoginView.as_view()),
+    url(r'^news/$',views.NewsView.as_view()),
     url(r'^news/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',views.NewsView.as_view()),
     url(r'^comment/$',views.CommentView.as_view()),
     url(r'^comment/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',views.CommentView.as_view())
