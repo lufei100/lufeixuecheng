@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from . import models
 
+
 class LoginView(views.APIView):
     def get(self,request,*args,**kwargs):
         print("=======get==========")
