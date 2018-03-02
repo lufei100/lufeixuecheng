@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'api.middlewares.cors.CorsMiddleware'
 ]
 
-ROOT_URLCONF = 's6luffycity.urls'
+ROOT_URLCONF = 'luffy_django.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 's6luffycity.wsgi.application'
+WSGI_APPLICATION = 'luffy_django.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -125,4 +125,13 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         # "api.utils.auth.token_auth.LuffyTokenAuthentication",
     ]
+}
+############################REDIS#############################
+LUFFY_REDIS = {
+    "IP_ADDR":"123.207.145.15",
+    "PORT":6379,
+    "username":None,
+    "password":None,
+    "LUFFY_SHOPPING_CAR": "luffy_shopping_car",
+
 }

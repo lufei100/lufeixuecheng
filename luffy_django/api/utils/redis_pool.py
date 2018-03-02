@@ -1,4 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-from django_redis import get_redis_connection
-conn = get_redis_connection()
+import redis
+from luffy_django.settings import LUFFY_REDIS
+
+POOL = redis.ConnectionPool(host=LUFFY_REDIS['IP_ADDR'],port=LUFFY_REDIS['PORT'])
