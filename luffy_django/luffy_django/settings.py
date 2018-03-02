@@ -121,3 +121,17 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# ///////////////
+info = ['narutocity', 'naruto', 'naruto123', '192.168.20.15 ', '3306']
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': info[0],
+        'USER': info[1],
+        'PASSWORD': info[2],
+        'HOST': info[3],
+        'POST': info[4],
+    }
+}
+LUFFY_SHOPPING_CAR = "luffy_shopping_car"
+

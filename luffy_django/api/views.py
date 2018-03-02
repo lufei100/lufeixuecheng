@@ -138,3 +138,94 @@ class CommentView(views.APIView):
 
 
 
+
+#老郭上传的购物车相关，随便删除
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import APIException
+from api.utils.exception import PricePolicyDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
+
+from django.conf import settings
+import json
+import redis
+from pool import POOL
+
+class MyAuthenticate(BaseAuthentication):
+    def authenticate(self, request):
+        token=request.query_params.get("token")
+        print(token)
+        obj=models.UserAuthToken.objects.filter(token=token).first()
+        print(obj)
+        if obj:
+            return (obj.user.username,obj)
+        raise APIException("用户认证失败")
+
+
+CONN = redis.Redis(connection_pool=POOL)
+
+class ShoppingCarView(views.APIView):
+    authentication_classes = [MyAuthenticate]
+
+    def post(self,request,*args,**kwargs):
+        """
+        获取课程ID和价格策略ID，让入redis
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        ret = {'code':1000,'msg':None}#最后如果报错需要返回的值
+        try:
+            course_id = request.data.get("course_id")#获取课程id
+            price_policy_id = request.data.get("price_policy_id")#获取策略id
+            # 获取课程
+            course_obj = models.Course.objects.get(id=course_id)
+            # 获取当前课程的所有价格策略：id.，有效期，价格
+            price_policy_list = []
+            flag = False
+            price_policy_objs = course_obj.price_policy.all()#??
+            for item in price_policy_objs:
+                if item.id == price_policy_id:
+                    flag = True
+                price_policy_list.append({
+                    'id':item.id,
+                    'valid_period':item.get_valid_period_display(),
+                    "price":item.price
+                })
+            if not flag:
+                raise PricePolicyDoesNotExist()
+            # 课程和价格策略均没有问题，将课程和价格策略方到redis中
+            #课程id，课程的图片，标题，所有的价格策略和默认的价格策略
+            course_dict = {
+                'id':course_obj.id,#课程的id
+                'img':course_obj.course_img,#课程图片
+                'title':course_obj.name,#课程标题
+                'price_policy_list':price_policy_list, # 所有的价格策略
+                'default_policy_id':price_policy_id # 默认价格策略#
+            }
+            print(course_dict,'99999999999999999')
+
+            # 获取购物车中的课程
+            #
+            nothing = CONN.hget(settings.LUFFY_SHOPPING_CAR,request.user.id)
+            if not nothing:
+                data = {course_obj.id:course_dict}
+            else:
+                data = json.loads(nothing.decode('utf-8'))
+                data[course_obj.id] = course_dict
+            CONN.hset(settings.LUFFY_SHOPPING_CAR,request.user.id,json.dumps(data))
+            aaa = CONN.hget(settings.LUFFY_SHOPPING_CAR,request.user.id)
+            print(aaa,'99999999999999999999')
+
+        except ObjectDoesNotExist as e:
+            ret['code'] = 1001
+            ret['code'] = '不存在的熊得'
+        except PricePolicyDoesNotExist as e:
+            ret['code'] = 1002
+            ret['msg'] = "价格策略不存在啊"
+        except Exception as e:
+            ret['code'] = 1003
+            ret['msg'] = "添加购物车错误了呀"
+        return Response(ret)
+
+
