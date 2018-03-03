@@ -29,5 +29,6 @@ class LuffyTokenAuthentication(BaseAuthentication):
 
         except Exception as e:
             raise exceptions.AuthenticationFailed(_('Invalid token.'))
+        print(token_obj.user.id)
         return (token_obj.user, token_obj)
 

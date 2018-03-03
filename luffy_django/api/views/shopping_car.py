@@ -12,9 +12,9 @@ POOL = redis.ConnectionPool(host="123.207.145.15",port=6379)
 CONN = redis.Redis(connection_pool=POOL)
 
 class ShoppingCarView(AuthAPIView,APIView):
-    authentication_classes = []
+    # authentication_classes = []
     def get(self,request,*args,**kwargs):
-        print("查看购物车")
+        print("查看购物车",request.user.id)
         """
         查看购物车
         :param request:
@@ -22,7 +22,7 @@ class ShoppingCarView(AuthAPIView,APIView):
         :param kwargs:
         :return:
         """
-        course = CONN.hget(settings.LUFFY_SHOPPING_CAR,1)
+        course = CONN.hget(settings.LUFFY_SHOPPING_CAR,request.user.id)
         course_dict = json.loads(course.decode('utf-8'))
         return Response(course_dict)
 
@@ -66,14 +66,15 @@ class ShoppingCarView(AuthAPIView,APIView):
             # a. 获取当前用户购物车中的课程 car = {1: {,,,}, 2:{....}}
             # b. car[course_obj.id] = course_dict
             # c. conn.hset('luffy_shopping_car',request.user.id,car)
-            nothing = CONN.hget(settings.LUFFY_SHOPPING_CAR,1)
+            nothing = CONN.hget(settings.LUFFY_SHOPPING_CAR,request.user.id)
             if not nothing:
                 data = {course_obj.id: course_dict}
             else:
                 data = json.loads(nothing.decode('utf-8'))
                 data[course_obj.id] = course_dict
 
-            CONN.hset(settings.LUFFY_SHOPPING_CAR,1, json.dumps(data))
+            CONN.hset(settings.LUFFY_SHOPPING_CAR,request.user.id, json.dumps(data))
+            print(CONN.hget(settings.LUFFY_SHOPPING_CAR,request.user.id))
 
         except ObjectDoesNotExist as e:
             ret['code'] = 1001

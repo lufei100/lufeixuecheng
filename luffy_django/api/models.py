@@ -45,7 +45,7 @@ class DegreeCourse(models.Model):
 
     # 为了计算学位奖学金
     period = models.PositiveIntegerField(verbose_name="建议学习周期(days)", default=150)
-    prerequisite = models.TextField(verbose_name="课程先修要求", max_length=1024)
+    # prerequisite = models.TextField(verbose_name="课程先修要求", max_length=1024)
     teachers = models.ManyToManyField("Teacher", verbose_name="课程讲师")
     # 用于GenericForeignKey反向查询，不会生成表字段，切勿删除
     degreecourse_price_policy = GenericRelation("PricePolicy")
@@ -626,7 +626,9 @@ class OrderDetail(models.Model):
 
     content_type = models.ForeignKey(ContentType)  # 可关联普通课程或学位
     object_id = models.PositiveIntegerField()
+    print(object_id,"=========")
     content_object = GenericForeignKey('content_type', 'object_id')
+    # print(content_object)
 
     original_price = models.FloatField("课程原价")
     price = models.FloatField("折后价格")
@@ -666,13 +668,13 @@ class TransactionRecord(models.Model):
 class Account(models.Model):
     username = models.CharField("用户名", max_length=64, unique=True)
 
-    uid = models.CharField(max_length=64, unique=True, help_text='微信用户绑定和CC视频统计')  # 与第3方交互用户信息时，用这个uid,以避免泄露敏感用户信息
+    # uid = models.CharField(max_length=64, unique=True, help_text='微信用户绑定和CC视频统计')  # 与第3方交互用户信息时，用这个uid,以避免泄露敏感用户信息
 
-    openid = models.CharField(max_length=128, blank=True, null=True)
+    # openid = models.CharField(max_length=128, blank=True, null=True)
 
     password = models.CharField('password', max_length=128)
 
-    balance = models.PositiveIntegerField(default=0, verbose_name="可提现和使用余额")
+    # balance = models.PositiveIntegerField(default=0, verbose_name="可提现和使用余额")
 
     class Meta:
         verbose_name = '账户信息'
