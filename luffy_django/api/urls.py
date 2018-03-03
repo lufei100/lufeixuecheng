@@ -15,12 +15,24 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from . import views
+from .views import login
+from .views import news
+from .views import commit
+from .views import shopping_car
+from .views import order
+
 
 urlpatterns = [
-    url(r'^login/$',views.LoginView.as_view()),
-    url(r'^news/$',views.NewsView.as_view()),
-    url(r'^news/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',views.NewsView.as_view()),
-    url(r'^comment/$',views.CommentView.as_view()),
-    url(r'^comment/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',views.CommentView.as_view())
+    #用户登录
+    url(r'^login/$',login.LoginView.as_view()),
+    #深科技
+    url(r'^news/$',news.NewsView.as_view()),
+    url(r'^news/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',news.NewsView.as_view()),
+    #评论
+    url(r'^comment/$',commit.CommentView.as_view()),
+    url(r'^comment/(?P<pk>\d+)\.(?P<format>[a-z0-9]+)$',commit.CommentView.as_view()),
+    #购物车
+    url(r'shopping_car/$',shopping_car.ShoppingCarView.as_view()),
+    #我的订单
+    url(r'order/$',order.OrderView.as_view())
 ]
