@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'shopping_car/$',shopping_car.ShoppingCarView.as_view()),
     #我的订单
     url(r'order/$',order.OrderView.as_view())
+
 ]
