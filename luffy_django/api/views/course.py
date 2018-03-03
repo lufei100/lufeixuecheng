@@ -8,6 +8,7 @@ from api.serializer.course import CourseDetailModelSerializer
 
 
 class CourseView(APIView):
+    
     def get(self, request, *args, **kwargs):
         response = {'status': False}
         try:

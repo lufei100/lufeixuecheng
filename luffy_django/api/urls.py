@@ -3,29 +3,22 @@ from .views import auth
 from .views import course
 from .views import price
 from .views import article
-from .views import micro
-from .views import shopping_cart
-# from .views import shopping_car
+from .views import shopping_car
 # from .views import payment
 # from .views import order
 # from .views import alipay
-# from .views import shopping_cart
 
 urlpatterns = [
     url(r'^auth/$', auth.AuthView.as_view()),
-
     url(r'^courses/$', course.CourseView.as_view()),
     url(r'^courses/(?P<pk>\d+)/$', course.CourseView.as_view()),
-
-    url(r'^micros/$', micro.CourseView.as_view()),
-
     url(r'^price_policy/(?P<course_id>\d+)/$', price.PricePolicyView.as_view()),
-
-
     url(r'^article/$', article.ArticleView.as_view({'get': 'get'})),
     url(r'^article/(?P<pk>\d+)/$', article.ArticleView.as_view({'get': 'retrieve'})),
-    url(r'^shoppingcar/$', shopping_cart.ShoppingCart.as_view()),
-    url(r'^shoppingcar/(?P<pk>\d+)/$', shopping_cart.ShoppingCart.as_view()),
+
+    url(r'^shopping_car/$', shopping_car.ShoppingCarView.as_view()),
+    url(r'^shopping_car/(?P<pk>\d+)/$', shopping_car.ShoppingCarView.as_view()),
+
     # url(r'^shop_car/$', shopping_car.ShoppingCarView.as_view({'get': 'get', 'post': 'post'})),
     # url(r'^shop_car/(?P<pk>\d+)/$', shopping_car.ShoppingCarView.as_view({'delete': 'delete', 'put': "put"})),
     # url(r'^payment/$', payment.PaymentView.as_view()),
