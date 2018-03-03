@@ -8,11 +8,8 @@ from rest_framework import HTTP_HEADER_ENCODING, exceptions
 
 
 class LuffyTokenAuthentication(BaseAuthentication):
-<<<<<<< HEAD
     keyword = 'Token'
-=======
-    keyword = 'token'
->>>>>>> d88e5362166088677c2fecc32ab1afc71f0a8611
+
 
     def authenticate(self, request):
         """
@@ -28,16 +25,9 @@ class LuffyTokenAuthentication(BaseAuthentication):
         from api.models import UserAuthToken
         try:
             token_obj = UserAuthToken.objects.select_related('user').get(token=token)
-<<<<<<< HEAD
-=======
-            print(token_obj,'99999999999999999999999')
->>>>>>> d88e5362166088677c2fecc32ab1afc71f0a8611
+            print(token_obj,'9999999999999zhang')
+
         except Exception as e:
             raise exceptions.AuthenticationFailed(_('Invalid token.'))
-
         return (token_obj.user, token_obj)
-<<<<<<< HEAD
-=======
 
-
->>>>>>> d88e5362166088677c2fecc32ab1afc71f0a8611
