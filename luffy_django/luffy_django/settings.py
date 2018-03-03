@@ -76,13 +76,25 @@ WSGI_APPLICATION = 'luffy_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
+info = ['narutocity', 'naruto', 'naruto123', '192.168.20.15 ', '3306']
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': info[0],
+        'USER': info[1],
+        'PASSWORD': info[2],
+        'HOST': info[3],
+        'POST': info[4],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -121,3 +133,15 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+LUFFY_SHOPPING_CAR = "luffy_shopping_car"
+
+# LUFFY_REDIS = {
+#     "IP_ADDR":"123.207.145.15",
+#     "PORT":6379,
+#     "username":None,
+#     "password":None,
+#     "LUFFY_SHOPPING_CAR": "luffy_shopping_car",
+#
+# }
